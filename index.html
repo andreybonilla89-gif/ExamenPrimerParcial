@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+       <h1>Turismo App</h1>
+<p>Buscador de lugares turísticos</p>
+
+    <!-- Configuración básica de la página -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Título que aparece en la pestaña del navegador -->
+    <title>Explorador de Lugares Turísticos</title>
+
+    <!-- Hoja de estilos -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <!-- ======================================================
+         ENCABEZADO DE LA APLICACIÓN
+         Muestra el título y una pequeña descripción.
+    ======================================================= -->
+    <header>
+
+        <h1>🌍 Explorador de Lugares Turísticos</h1>
+
+        <p>
+            Busca información turística utilizando una API REST.
+        </p>
+
+    </header>
+
+    <!-- ======================================================
+         FORMULARIO DE BÚSQUEDA
+         Permite seleccionar la ciudad, categoría y una palabra
+         clave para realizar la consulta.
+    ======================================================= -->
+    <section class="busqueda">
+
+        <!-- Ciudad -->
+        <div class="campo">
+
+            <label for="location">Ciudad</label>
+
+            <select id="location">
+                <option value="Barcelona">Barcelona</option>
+                <option value="Amsterdam">Amsterdam</option>
+                <option value="Berlin">Berlin</option>
+                <option value="Dubay">Dubay</option>
+                <option value="London">London</option>
+                <option value="Paris">Paris</option>
+                <option value="Rome">Rome</option>
+                <option value="Tuscany">Tuscany</option>
+            </select>
+
+        </div>
+
+        <!-- Categoría -->
+        <div class="campo">
+
+            <label for="category">Categoría</label>
+
+            <select id="category">
+                <option value="restaurant">Restaurant</option>
+                <option value="attraction">Attraction</option>
+                <option value="poi">Point Of Interest</option>
+                <option value="accommodation">Accommodation</option>
+            </select>
+
+        </div>
+
+        <!-- Palabra clave -->
+        <div class="campo">
+
+            <label for="keyword">Palabra clave</label>
+
+            <input
+                type="text"
+                id="keyword"
+                placeholder="Ejemplo: beer">
+
+        </div>
+
+        <!-- Botón para realizar la búsqueda -->
+        <button id="btnBuscar">
+
+            Buscar
+
+        </button>
+
+    </section>
+
+    <!-- ======================================================
+         CONTENIDO PRINCIPAL
+         Contiene los resultados y la lista de favoritos.
+    ======================================================= -->
+    <main>
+
+        <!-- Resultados de la búsqueda -->
+        <section>
+
+            <h2>Resultados</h2>
+
+            <!-- Aquí JavaScript agregará las tarjetas -->
+            <div id="listaLugares">
+
+            </div>
+
+        </section>
+
+        <!-- Favoritos -->
+        <aside>
+
+            <h2>Favoritos</h2>
+
+            <!-- Lugares guardados en localStorage -->
+            <div id="favoritos">
+
+            </div>
+
+            <!-- Elimina todos los favoritos -->
+            <button id="btnEliminarFavoritos">
+
+                Eliminar todos
+
+            </button>
+
+        </aside>
+
+    </main>
+
+    <!-- ======================================================
+         DETALLES DEL LUGAR
+         Aquí se mostrará la información completa del sitio
+         seleccionado por el usuario.
+    ======================================================= -->
+    <section id="detalleLugar">
+
+        <h2>Detalles del lugar</h2>
+
+        <div id="contenidoDetalle">
+
+            Selecciona un lugar para ver la información.
+
+        </div>
+
+    </section>
+
+    <!-- ======================================================
+         PIE DE PÁGINA
+         Información del proyecto.
+    ======================================================= -->
+    <footer>
+
+        <p>
+
+            Examen de Programación Web - JavaScript Estándar - XMLHttpRequest - LocalStorage
+
+        </p>
+
+    </footer>
+
+    <!-- ======================================================
+         ARCHIVOS JAVASCRIPT
+
+         storage.js  -> Maneja el localStorage.
+         api.js      -> Consume la API utilizando XMLHttpRequest.
+         ui.js       -> Crea y actualiza la interfaz.
+         app.js      -> Controla toda la aplicación.
+    ======================================================= -->
+
+    <script src="js/storage.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
