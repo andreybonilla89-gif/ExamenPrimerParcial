@@ -1,5 +1,5 @@
 // ==========================================
-// UI.JS - FINAL COMPLETO
+// UI.JS
 // ==========================================
 
 const listaLugares = document.getElementById("listaLugares");
@@ -8,119 +8,166 @@ const detalleDiv = document.getElementById("contenidoDetalle");
 const btnEliminarFavoritos = document.getElementById("btnEliminarFavoritos");
 
 // ==========================================
-// MOSTRAR LUGARES
+// MOSTRAR RESULTADOS
 // ==========================================
 function mostrarLugares(lugares) {
 
     listaLugares.innerHTML = "";
 
     if (!lugares || lugares.length === 0) {
-        listaLugares.innerHTML = "<p>No se encontraron resultados</p>";
+        listaLugares.innerHTML = "<p>No se encontraron lugares.</p>";
         return;
     }
 
-    lugares.forEach(lugar => {
+    lugares.forEach(function(lugar){
 
-        let div = document.createElement("div");
-        div.classList.add("tarjeta");
+        let tarjeta = document.createElement("div");
+        tarjeta.className = "tarjeta";
 
-        div.innerHTML = `
-            <h3>${lugar.name}</h3>
-            <p><strong>Dirección:</strong> ${lugar.address || "No disponible"}</p>
-            <p><strong>Categoría:</strong> ${lugar.category || "No disponible"}</p>
+        tarjeta.innerHTML = `
+            <h3>${lugar.name || "Sin nombre"}</h3>
 
-            <button class="btnDetalles">Ver detalles</button>
+            <p><strong>Dirección:</strong>
+            ${lugar.address || "No disponible"}</p>
+
+            <p><strong>Categoría:</strong>
+            ${lugar.category || "No disponible"}</p>
+
+            <button class="btnDetalle">Ver detalles</button>
             <button class="btnGuardar">Guardar</button>
         `;
 
-        div.querySelector(".btnDetalles").addEventListener("click", function () {
-            verDetalles(lugar.id);
-        });
+        tarjeta.querySelector(".btnDetalle").onclick = function(){
 
-       div.querySelector(".btnGuardar").onclick = function () {
-    guardarEnFavoritos(lugar);
-};
+            verDetalles(lugar);
 
-        listaLugares.appendChild(div);
+        };
+
+        tarjeta.querySelector(".btnGuardar").onclick = function(){
+
+            guardarEnFavoritos(lugar);
+
+        };
+
+        listaLugares.appendChild(tarjeta);
+
     });
+
 }
 
 // ==========================================
-// MOSTRAR FAVORITOS
+// VER DETALLES DEL LUGAR
 // ==========================================
-function mostrarFavoritos() {
+function verDetalles(lugar){
 
-    let favoritos = obtenerFavoritos();
+    detalleDiv.innerHTML = `
+        <div class="tarjeta">
 
-    favoritosDiv.innerHTML = "";
+            <h2>${lugar.name || "Sin nombre"}</h2>
 
-    if (favoritos.length === 0) {
-        favoritosDiv.innerHTML = "<p>No hay favoritos</p>";
-        return;
-    }
+            <hr>
 
-    favoritos.forEach(fav => {
+            <p><strong>📍 Dirección:</strong><br>
+            ${lugar.address || "No disponible"}</p>
 
-        let div = document.createElement("div");
-        div.classList.add("favorito");
+            <p><strong>🏷 Categoría:</strong><br>
+            ${lugar.category || "No disponible"}</p>
 
-        div.innerHTML = `
-            <p>${fav.name}</p>
-            <button class="btnEliminar">Eliminar</button>
-        `;
+            <p><strong>📝 Descripción:</strong><br>
+            ${lugar.description || "Este lugar turístico fue obtenido mediante la API REST. No existe una descripción disponible para este sitio."}</p>
 
-        div.querySelector(".btnEliminar").addEventListener("click", function () {
-            eliminarFav(fav.id);
-        });
+            <p><strong>🌎 Ciudad:</strong><br>
+            ${document.getElementById("location").value}</p>
 
-        favoritosDiv.appendChild(div);
-    });
-}
+            <p><strong>🔎 Palabra buscada:</strong><br>
+            ${document.getElementById("keyword").value || "Sin palabra clave"}</p>
 
-// ==========================================
-// VER DETALLES
-// ==========================================
-function verDetalles(id) {
+            <p><strong>🕒 Horario:</strong><br>
+            ${lugar.openingHours || "No disponible"}</p>
 
-    detalleDiv.innerHTML = "<p>Cargando detalles...</p>";
+            <p><strong>☎ Teléfono:</strong><br>
+            ${lugar.telephone || "No disponible"}</p>
 
-    obtenerDetalles(id, function (err, data) {
+            <p><strong>✉ Correo:</strong><br>
+            ${lugar.email || "No disponible"}</p>
 
-        if (err || !data) {
-            detalleDiv.innerHTML = "<p>No se pudieron cargar los detalles</p>";
-            return;
-        }
+            <p><strong>🌐 Sitio Web:</strong><br>
+            ${
+                lugar.url
+                ? `<a href="${lugar.url}" target="_blank">Visitar sitio web</a>`
+                : "No disponible"
+            }</p>
 
-        detalleDiv.innerHTML = `
-            <h3>${data.name || "Sin nombre"}</h3>
-            <p><strong>Descripción:</strong> ${data.description || "No disponible"}</p>
-            <p><strong>Dirección:</strong> ${data.address || "No disponible"}</p>
-            <p><strong>Teléfono:</strong> ${data.telephone || "No disponible"}</p>
-            <p>
-                <strong>Web:</strong>
-                ${data.url ? `<a href="${data.url}" target="_blank">Abrir sitio</a>` : "No disponible"}
-            </p>
-        `;
-    });
+        </div>
+    `;
+
 }
 
 // ==========================================
 // FAVORITOS
 // ==========================================
-function guardarEnFavoritos(lugar) {
-    agregarFavorito(lugar);
-    mostrarFavoritos();
+
+function mostrarFavoritos(){
+
+    let favoritos = obtenerFavoritos();
+
+    favoritosDiv.innerHTML = "";
+
+    if(favoritos.length===0){
+
+        favoritosDiv.innerHTML="<p>No hay favoritos</p>";
+        return;
+
+    }
+
+    favoritos.forEach(function(favorito){
+
+        let div=document.createElement("div");
+
+        div.className="favorito";
+
+        div.innerHTML=`
+
+            <span>${favorito.name}</span>
+
+            <button>Eliminar</button>
+
+        `;
+
+        div.querySelector("button").onclick=function(){
+
+            eliminarFavorito(favorito.id);
+
+            mostrarFavoritos();
+
+        };
+
+        favoritosDiv.appendChild(div);
+
+    });
+
 }
 
-function eliminarFav(id) {
-    eliminarFavorito(id);
+// ==========================================
+// GUARDAR
+// ==========================================
+
+function guardarEnFavoritos(lugar){
+
+    agregarFavorito(lugar);
+
     mostrarFavoritos();
+
 }
 
 // ==========================================
 // ELIMINAR TODOS
 // ==========================================
-btnEliminarFavoritos.onclick = function () {
+
+btnEliminarFavoritos.onclick=function(){
+
     eliminarTodosFavoritos();
+
     mostrarFavoritos();
+
 };
